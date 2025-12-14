@@ -99,7 +99,7 @@ const Header: React.FC = () => {
             />
           </button>
           
-          {/* --- NEW: DOWNLOAD CV BUTTON (Desktop) --- */}
+          
           <a
             href='/images/banner/Haris_Resume.pdf'
             target='_blank'
@@ -113,7 +113,7 @@ const Header: React.FC = () => {
           <Link
             href='/#contact'
             className='hidden xl:block px-6 py-2 bg-primary text-white rounded-lg outline-none hover:bg-transparent hover:text-primary border border-primary duration-500 text-base font-semibold'>
-            Let's Talk
+            Let&apos;s Talk
           </Link>
           
           {/* MOBILE TOGGLE */}
@@ -188,7 +188,7 @@ const Header: React.FC = () => {
               onClick={() => {
                 setNavbarOpen(false)
               }}>
-              Let's Talk
+              Let&apos;s Talk
             </Link>
           </div>
         </nav>

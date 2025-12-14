@@ -7,15 +7,15 @@ const Logo = () => {
       <Image
         src='/images/logo/logo.webp'
         alt='logo'
-        width={180}
-        height={45}
+        width={150}
+        height={33}
         className='block dark:hidden object-contain'        
       />
       <Image
         src='/images/logo/white-logo.webp'
         alt='logo'
-        width={180}
-        height={45}
+        width={150}
+        height={33}
         className='hidden dark:block object-contain'        
       />
     </Link>
