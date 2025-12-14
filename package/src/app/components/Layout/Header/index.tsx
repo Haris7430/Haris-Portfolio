@@ -14,7 +14,6 @@ const Header: React.FC = () => {
   const [navbarOpen, setNavbarOpen] = useState(false)
   const [sticky, setSticky] = useState(false)
   
-  // Cleaned up: Removed unused Auth refs and state
   const mobileMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -81,6 +80,7 @@ const Header: React.FC = () => {
         </nav>
         <div className='flex items-center gap-4'>
           
+          {/* THEME TOGGLE */}
           <button
             aria-label='Toggle theme'
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -99,13 +99,24 @@ const Header: React.FC = () => {
             />
           </button>
           
-          
+          {/* --- NEW: DOWNLOAD CV BUTTON (Desktop) --- */}
+          <a
+            href='/images/banner/Haris_Resume.pdf'
+            target='_blank'
+            rel="noopener noreferrer"
+            className='hidden xl:flex items-center gap-2 px-5 py-2 bg-transparent text-primary rounded-lg border border-primary hover:bg-primary hover:text-white duration-500 text-base font-semibold transition-colors'>
+            <Icon icon="solar:file-download-linear" width="20" height="20" />
+            <span>CV</span>
+          </a>
+
+          {/* CONTACT BUTTON (Desktop) */}
           <Link
             href='/#contact'
             className='hidden xl:block px-6 py-2 bg-primary text-white rounded-lg outline-none hover:bg-transparent hover:text-primary border border-primary duration-500 text-base font-semibold'>
             Let's Talk
           </Link>
           
+          {/* MOBILE TOGGLE */}
           <button
             onClick={() => setNavbarOpen(!navbarOpen)}
             className='block xl:hidden p-2 rounded-lg hover:cursor-pointer'
@@ -117,12 +128,12 @@ const Header: React.FC = () => {
         </div>
       </div>
       
-      {/* MOBILE MENU OVERLAY */}
+      {/* MOBILE OVERLAY */}
       {navbarOpen && (
         <div className='fixed top-0 left-0 w-full h-full bg-black/50 z-40' />
       )}
       
-      {/* MOBILE MENU SIDEBAR */}
+      {/* MOBILE MENU */}
       <div
         ref={mobileMenuRef}
         className={`xl:hidden fixed top-0 right-0 h-full w-full bg-white dark:bg-darklight shadow-lg transform transition-transform duration-300 max-w-xs ${
@@ -159,16 +170,25 @@ const Header: React.FC = () => {
           ))}
           
           <div className='mt-6 flex flex-col gap-4 w-full'>
-            
-            
-            
+            {/* --- NEW: DOWNLOAD CV BUTTON (Mobile) --- */}
+            <a
+              href='/images/banner/Haris_Resume.pdf'
+              target='_blank'
+              rel="noopener noreferrer"
+              onClick={() => setNavbarOpen(false)}
+              className='w-full flex items-center justify-center gap-2 px-4 py-3 bg-transparent text-primary rounded-lg border border-primary hover:bg-primary hover:text-white duration-500 text-base font-semibold'>
+              <Icon icon="solar:file-download-linear" width="20" height="20" />
+              Download CV
+            </a>
+
+            {/* CONTACT BUTTON (Mobile) */}
             <Link
               href='/#contact'
-              className='w-full text-center px-4 py-3 bg-primary text-white rounded-lg outline-none hover:bg-transparent hover:text-primary border border-primary duration-500 text-base font-semibold'
+              className='w-full text-center px-6 py-3 bg-primary text-white rounded-lg outline-none hover:bg-transparent hover:text-primary border border-primary duration-500 text-base font-semibold'
               onClick={() => {
                 setNavbarOpen(false)
               }}>
-              Contact Me 
+              Let's Talk
             </Link>
           </div>
         </nav>
