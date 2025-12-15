@@ -69,15 +69,21 @@ const Project = () => {
     <div id='project' className='scroll-mt-12'>
       <section className='bg-secondary dark:bg-darklight overflow-hidden'>
         <div className='container relative'>
-          <div className='mb-4'>
-            <h2 className='text-center'>Popular Projects</h2>
+          
+          {/* --- CONTENT (Heading & Text) --- */}
+          {/* Added 'relative z-10' to ensure text sits ON TOP of the patterns */}
+          <div className='relative z-10'>
+            <div className='mb-4'>
+              <h2 className='text-center'>Popular Projects</h2>
+            </div>
+            <div className='md:max-w-45 mx-auto mb-8'>
+              <p className='text-xl font-normal text-center leading-8'>
+                Scalable web applications demonstrating Clean Architecture,
+                robust backend logic, and responsive UI.
+              </p>
+            </div>
           </div>
-          <div className='md:max-w-45 mx-auto mb-8'>
-            <p className='text-xl font-normal text-center leading-8'>
-  Scalable web applications demonstrating Clean Architecture, 
-  robust backend logic, and responsive UI.
-</p>
-          </div>
+
           {/* slider */}
           <div className='relative z-20'>
             <Slider {...settings}>
@@ -94,18 +100,19 @@ const Project = () => {
                             alt={item.coverImg}
                             width={234}
                             height={236}
-                            className='w-full rounded-lg'
+                            className='w-full rounded-lg object-cover h-[236px]' // Added object-cover to fix stretching
                           />
                         </div>
                         <div className='flex items-center gap-2'>
+                           {/* NOTE: You should probably make this logo dynamic from API too later */}
                           <Image
                             src={'/images/project/Healaria Fashions Logo illustate-01.png'}
                             alt={'logo'}
-                            width={71}
-                            height={71}
+                            width={40} // Reduced size (71 was too big for a small card)
+                            height={40}
                             className='rounded-full'
                           />
-                          <p className='text-base font-medium text-darkblue dark:text-white'>
+                          <p className='text-base font-medium text-darkblue dark:text-white truncate'>
                             {item.name}
                           </p>
                         </div>
@@ -114,8 +121,10 @@ const Project = () => {
                   ))}
             </Slider>
           </div>
-          {/* floating images */}
-          <div className='absolute top-28 -left-9 dark:opacity-5'>
+
+          {/* --- FLOATING PATTERNS --- */}
+          {/* Removed 'z-10' from the bottom pattern so it doesn't cover text */}
+          <div className='absolute top-28 -left-9 dark:opacity-5 z-0'>
             <Image
               src={'/images/banner/pattern1.svg'}
               alt='ptrn1'
@@ -123,10 +132,10 @@ const Project = () => {
               height={141}
             />
           </div>
-          <div className='absolute -bottom-7 -right-7 dark:opacity-5 z-10'>
+          <div className='absolute -bottom-7 -right-7 dark:opacity-5 z-0'>
             <Image
               src={'/images/banner/pattern2.svg'}
-              alt='ptrn1'
+              alt='ptrn2'
               width={141}
               height={141}
             />
