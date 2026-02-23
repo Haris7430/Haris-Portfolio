@@ -1,0 +1,101 @@
+<section class="projects-section section" id="projects">
+    <div class="container">
+        <div class="projects-header">
+            <div class="badge project-badge">Featured Work</div>
+            <h2 class="section-title">Selected <span class="text-accent-gradient">Case Studies</span></h2>
+            <p class="section-subtitle">Real-world enterprise solutions delivering measurable results.</p>
+        </div>
+
+        <div class="projects-grid">
+            <!-- Project 1: Healaria Fashions -->
+            <article class="project-card healaria-card glass-panel" id="project-1">
+                <div class="project-content">
+                    <div class="project-meta">
+                        <span class="meta-tag">B2C E-Commerce</span>
+                        <span class="meta-year">2025</span>
+                    </div>
+                    <h3 class="project-title">Healaria Fashions</h3>
+                    <p class="project-description">
+                        A comprehensive full-stack e-commerce platform built on the MEAN stack. Engineered complex
+                        business logic
+                        including a digital wallet system, unique referral rewards, and a dynamic visualization
+                        dashboard for admins.
+                    </p>
+                    <ul class="project-features">
+                        <li><span class="bullet"></span> AJAX-based Cart & Wishlist</li>
+                        <li><span class="bullet"></span> Digital Wallet & Refunds</li>
+                        <li><span class="bullet"></span> Secure OTP Authentication</li>
+                        <li><span class="bullet"></span> Razorpay Integration</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span>MongoDB</span><span>Express</span><span>Node.js</span><span>EJS</span>
+                    </div>
+                    <div class="project-actions">
+                        <!-- Link removed since domain is expired, maybe show a disabled or github link if we had one -->
+                        <button class="btn btn-outline" disabled>Domain Expired</button>
+                    </div>
+                </div>
+                <div class="project-image-wrapper" (click)="nextImage(0)">
+                    <ng-container *ngFor="let img of projectImages[0]; let i = index">
+                        <img [src]="img" [alt]="'Healaria Fashions Project Image ' + (i + 1)"
+                            class="project-img slider-img" [class.active]="activeImageIndices[0] === i" width="612"
+                            height="792" loading="lazy" onerror="this.style.display='none'">
+                    </ng-container>
+
+                    <div class="slider-dots" *ngIf="projectImages[0].length > 1">
+                        <span *ngFor="let img of projectImages[0]; let i = index" class="dot"
+                            [class.active]="activeImageIndices[0] === i"
+                            (click)="$event.stopPropagation(); selectImage(0, i)">
+                        </span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 2: Vettro Traders -->
+            <article class="project-card vettro-card glass-panel" id="project-2">
+                <div class="project-content">
+                    <div class="project-meta">
+                        <span class="meta-tag">Corporate Ecosystem</span>
+                        <span class="meta-year">2026</span>
+                    </div>
+                    <h3 class="project-title">Vettro Traders & Integrated Services</h3>
+                    <p class="project-description">
+                        A modern, high-performance web application designed to showcase Vettro Traders' premium
+                        interior solutions. The platform features an immersive "Ecosystem" experience, a detailed
+                        product gallery, and a streamlined contact flow, built to convert visitors into business leads.
+                    </p>
+                    <ul class="project-features">
+                        <li><span class="bullet"></span> Angular v21 (Static Site Generation)</li>
+                        <li><span class="bullet"></span> Tailwind CSS v4 & Custom styling</li>
+                        <li><span class="bullet"></span> Vercel Speed Insights & Analytics</li>
+                        <li><span class="bullet"></span> Multi-Branch Dynamic Product Gallery</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span>Angular 21</span><span>Tailwind v4</span><span>TypeScript</span><span>SSG</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://www.vettrotraders.com/" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-primary">
+                            Visit Live Site
+                            <svg xmlns="http://www.w3.org/-2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="project-image-wrapper">
+                    <ng-container *ngFor="let img of projectImages[1]; let i = index">
+                        <img [src]="img" [alt]="'Vettro Traders Project Image ' + (i + 1)"
+                            class="project-img slider-img" [class.active]="activeImageIndices[1] === i" width="1600"
+                            height="769" loading="lazy" onerror="this.style.display='none'">
+                    </ng-container>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>

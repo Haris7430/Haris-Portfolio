@@ -1,0 +1,41 @@
+<nav class="portfolio-navbar" [class.scrolled]="isScrolled">
+    <div class="container navbar-container">
+        <a href="#home" class="navbar-brand">
+            <img src="images/logo/logo.webp" alt="Abdul Haris - Meaningful Digital Ecosystems" class="brand-logo"
+                width="91" height="48" fetchpriority="high">
+        </a>
+
+        <!-- Desktop Navigation -->
+        <ul class="nav-links desktop-only">
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+            <li><a href="#contact" class="nav-link btn btn-primary btn-sm">Let's Talk</a></li>
+        </ul>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle mobile-only" (click)="toggleMobileMenu()" aria-label="Toggle Menu">
+            <svg *ngIf="!isMobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <svg *ngIf="isMobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div class="mobile-dropdown" [class.open]="isMobileMenuOpen">
+        <ul class="mobile-nav-links">
+            <li><a href="#about" class="nav-link" (click)="closeMenu()">About</a></li>
+            <li><a href="#projects" class="nav-link" (click)="closeMenu()">Projects</a></li>
+            <li><a href="#testimonials" class="nav-link" (click)="closeMenu()">Reviews</a></li>
+            <li><a href="#contact" class="nav-link" (click)="closeMenu()">Let's Talk</a></li>
+        </ul>
+    </div>
+</nav>
