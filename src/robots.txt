@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://abdulharis.com/sitemap.xml
+Sitemap: https://abdulharis.is-a.dev/sitemap.xml
