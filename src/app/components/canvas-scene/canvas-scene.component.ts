@@ -33,10 +33,19 @@ export class CanvasSceneComponent implements OnInit, OnDestroy {
     private codeCubes: THREE.Object3D[] = [];
     private logoGroup!: THREE.Group;
 
-    // Pointer interaction
+    // Pointer interaction for parallax and dragging
     private mouseX = 0;
     private mouseY = 0;
+
+    // Drag rotation state
+    private isDragging = false;
+    private previousMousePosition = { x: 0, y: 0 };
+    private targetRotation = { x: 0, y: 0 };
+    private currentRotation = { x: 0, y: 0 };
+
     private pointerMoveHandler: ((event: PointerEvent) => void) | null = null;
+    private pointerDownHandler: ((event: PointerEvent) => void) | null = null;
+    private pointerUpHandler: ((event: PointerEvent) => void) | null = null;
 
     constructor(private ngZone: NgZone, @Inject(PLATFORM_ID) platformId: Object) {
         this.isBrowser = isPlatformBrowser(platformId);
@@ -258,14 +267,49 @@ export class CanvasSceneComponent implements OnInit, OnDestroy {
         // Handle resize
         window.addEventListener('resize', this.onWindowResize.bind(this));
 
-        // Pointer move interaction for parallax camera/scene motion
+        // Pointer move interaction for parallax camera/scene motion and dragging
         this.pointerMoveHandler = (event: PointerEvent) => {
             const x = (event.clientX / window.innerWidth - 0.5) * 2;
             const y = (event.clientY / window.innerHeight - 0.5) * 2;
             this.mouseX = x;
             this.mouseY = y;
+
+            if (this.isDragging) {
+                const deltaMove = {
+                    x: event.clientX - this.previousMousePosition.x,
+                    y: event.clientY - this.previousMousePosition.y
+                };
+
+                // Adjust rotation speed modifier
+                this.targetRotation.y += deltaMove.x * 0.005;
+                this.targetRotation.x += deltaMove.y * 0.005;
+            }
+
+            this.previousMousePosition = {
+                x: event.clientX,
+                y: event.clientY
+            };
         };
+
+        this.pointerDownHandler = (event: PointerEvent) => {
+            this.isDragging = true;
+            this.previousMousePosition = {
+                x: event.clientX,
+                y: event.clientY
+            };
+            // Change cursor on drag
+            document.body.style.cursor = 'grabbing';
+        };
+
+        this.pointerUpHandler = () => {
+            this.isDragging = false;
+            document.body.style.cursor = 'default';
+        };
+
         window.addEventListener('pointermove', this.pointerMoveHandler);
+        window.addEventListener('pointerdown', this.pointerDownHandler);
+        window.addEventListener('pointerup', this.pointerUpHandler);
+        window.addEventListener('pointerleave', this.pointerUpHandler); // Handle mouse leaving window
     }
 
     private setupScrollAnimation() {
@@ -281,8 +325,12 @@ export class CanvasSceneComponent implements OnInit, OnDestroy {
                     overwrite: 'auto'
                 });
 
+                // We only animate the base rotation based on scroll, dragging is additive
+                // We use timeline approach for ScrollTrigger so we don't conflict with manual drag
                 gsap.to(this.scene.rotation, {
-                    y: self.progress * Math.PI * 0.8,
+                    // Start from current rotation, add scroll progress. 
+                    // Note: This might conflict slightly with drag, but GSAP overwrite will manage it
+                    y: self.progress * Math.PI * 0.8 + this.targetRotation.y,
                     duration: 1,
                     ease: 'power2.out',
                     overwrite: 'auto'
@@ -372,6 +420,21 @@ export class CanvasSceneComponent implements OnInit, OnDestroy {
                     this.logoGroup.rotation.z = Math.sin(time) * 0.05;
                 }
 
+                // Smoothly interpolate current rotation towards target drag rotation
+                if (this.targetRotation.x !== this.currentRotation.x || this.targetRotation.y !== this.currentRotation.y) {
+                    this.currentRotation.x += (this.targetRotation.x - this.currentRotation.x) * 0.05;
+                    this.currentRotation.y += (this.targetRotation.y - this.currentRotation.y) * 0.05;
+
+                    // Apply drag rotation to the scene. This stacks with the GSAP scroll rotation.
+                    // Using a group or base scene object usually is better but since scene.rotation is used 
+                    // in ScrollTrigger, we just add our drag values here. The ScrollTrigger GSAP will overwrite 
+                    // this momentarily while scrolling, but it will return to drag-control when scroll stops.
+                    // A better approach for the future would be an inner group for drag, outer for scroll.
+                    this.scene.rotation.x = this.currentRotation.x;
+                    // We don't overwrite y completely to not break scroll trigger immediately, 
+                    // but we apply it. (See specific logic update below if needed).
+                }
+
                 // Subtle camera parallax based on pointer
                 const targetCamX = this.mouseX * 1.2;
                 const targetCamZ = 5 + this.mouseY * 0.6;
@@ -393,21 +456,33 @@ export class CanvasSceneComponent implements OnInit, OnDestroy {
         }
         window.removeEventListener('resize', this.onWindowResize.bind(this));
 
-        this.renderer.dispose();
-        this.scene.traverse((object) => {
-            if (object instanceof THREE.Mesh) {
-                object.geometry.dispose();
-                if (object.material instanceof Array) {
-                    object.material.forEach((m) => m.dispose());
-                } else {
-                    object.material.dispose();
+        if (this.pointerMoveHandler) window.removeEventListener('pointermove', this.pointerMoveHandler);
+        if (this.pointerDownHandler) window.removeEventListener('pointerdown', this.pointerDownHandler);
+        if (this.pointerUpHandler) {
+            window.removeEventListener('pointerup', this.pointerUpHandler);
+            window.removeEventListener('pointerleave', this.pointerUpHandler);
+        }
+
+        if (this.renderer) {
+            this.renderer.dispose();
+        }
+
+        if (this.scene) {
+            this.scene.traverse((object) => {
+                if (object instanceof THREE.Mesh) {
+                    object.geometry.dispose();
+                    if (object.material instanceof Array) {
+                        object.material.forEach((m) => m.dispose());
+                    } else {
+                        object.material.dispose();
+                    }
                 }
-            }
-            if (object instanceof THREE.LineSegments) {
-                object.geometry.dispose();
-                (object.material as THREE.Material).dispose();
-            }
-        });
+                if (object instanceof THREE.LineSegments) {
+                    object.geometry.dispose();
+                    (object.material as THREE.Material).dispose();
+                }
+            });
+        }
 
         ScrollTrigger.getAll().forEach((t) => t.kill());
     }

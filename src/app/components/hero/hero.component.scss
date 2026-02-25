@@ -183,6 +183,117 @@
     color: var(--text-secondary);
 }
 
+.scroll-indicator {
+    position: absolute;
+    top: calc(100vh - 7rem);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 10;
+    animation: indicatorFadeIn 1s ease 0.5s both;
+
+    .scroll-text {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--text-muted);
+        font-weight: 600;
+    }
+
+    .mouse {
+        width: 24px;
+        height: 38px;
+        border: 2px solid var(--text-muted);
+        border-radius: 12px;
+        position: relative;
+
+        .wheel {
+            width: 4px;
+            height: 6px;
+            background-color: var(--accent-primary);
+            border-radius: 2px;
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll 1.5s infinite;
+        }
+    }
+
+    .arrows {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: -5px;
+
+        .arrow {
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid var(--accent-primary);
+            border-bottom: 2px solid var(--accent-primary);
+            transform: rotate(45deg);
+            animation: arrow-scroll 1.5s infinite;
+            margin-top: -4px;
+
+            &:nth-child(1) {
+                animation-delay: 0s;
+            }
+
+            &:nth-child(2) {
+                animation-delay: 0.15s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+        }
+    }
+}
+
+@keyframes indicatorFadeIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes scroll {
+    0% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, 15px);
+        opacity: 0;
+    }
+}
+
+@keyframes arrow-scroll {
+    0% {
+        opacity: 0;
+        transform: rotate(45deg) translate(-2px, -2px);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: rotate(45deg) translate(2px, 2px);
+    }
+}
+
 @media (max-width: 768px) {
     .hero-section {
         padding-top: 6rem;

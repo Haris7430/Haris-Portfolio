@@ -28,7 +28,7 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
     private initAnimations(): void {
         this.ctx = gsap.context(() => {
             // Set initial state for hero content to be hidden
-            gsap.set(['.badge.gsap-reveal', '.line.gsap-reveal', '.hero-subtitle.gsap-reveal', '.hero-cta.gsap-reveal', '.tech-stack-preview.gsap-reveal'], { opacity: 0, visibility: 'visible' });
+            gsap.set(['.badge.gsap-reveal', '.line.gsap-reveal', '.hero-subtitle.gsap-reveal', '.hero-cta.gsap-reveal', '.tech-stack-reveal', '.tech-stack-preview.gsap-reveal'], { opacity: 0, visibility: 'visible' });
 
             // Create a timeline that pins the hero section and scrubs the animation
             const tl = gsap.timeline({
@@ -43,7 +43,9 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
             });
 
             // 1. Initial empty space (user sees only 3D background for a bit of scrolling)
-            tl.to({}, { duration: 0.5 });
+            // Explicitly set scroll indicator to be visible at 0 progress and fade out early
+            tl.fromTo('.scroll-indicator', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -20, duration: 0.1 }, 0);
+            tl.to({}, { duration: 0.5 }, 0);
 
             // 2. Animate the badge and first elements
             tl.fromTo('.badge.gsap-reveal',

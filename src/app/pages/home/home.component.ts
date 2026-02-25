@@ -5,12 +5,13 @@ import { ProjectsComponent } from '../../components/projects/projects.component'
 import { TestimonialsComponent } from '../../components/testimonials/testimonials.component';
 import { ContactComponent } from '../../components/contact/contact.component';
 import { LogoShowcase } from '../../components/logo-showcase/logo-showcase';
+import { ServicesComponent } from '../../components/services/services';
 // Force IDE re-parse - updated
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [HeroComponent, LogoShowcase, AboutComponent, ProjectsComponent, TestimonialsComponent, ContactComponent],
+    imports: [HeroComponent, LogoShowcase, AboutComponent, ServicesComponent, ProjectsComponent, TestimonialsComponent, ContactComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss'
 })
