@@ -16,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 export class ProjectsComponent implements AfterViewInit, OnDestroy {
     private ctx: gsap.Context | undefined;
     private timerIntervals: any[] = [];
+    private mobileCarouselInterval: any;
 
     // Arrays of image paths for each project
     public projectImages: string[][] = [
@@ -36,12 +37,16 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
         ],
         [
             'images/project/The integrated interior ecosystem-Vettro traders.webp'
-        ]
+        ],
+        [
+            'images/project/Rupee-Logics_homepage.webp'
+        ],
+        [] // Vasantham Hotel has no image yet
     ];
 
     // State to track which image is currently selected for each project
-    public activeImageIndices: number[] = [0, 0];
-    public imageOrientation: string[] = ['horizontal', 'horizontal'];
+    public activeImageIndices: number[] = [0, 0, 0, 0];
+    public imageOrientation: string[] = ['horizontal', 'horizontal', 'horizontal', 'horizontal'];
 
     constructor(
         private el: ElementRef,
@@ -53,14 +58,58 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         if (isPlatformBrowser(this.platformId)) {
             // Flatten the nested arrays and preload all project images
-            const allUrls = this.projectImages.flat();
+            const allUrls = this.projectImages.flat().filter(url => url);
             this.imagePreload.preloadImages(allUrls);
 
             this.initAnimations();
             this.startAutoPlay();
-            this.checkImageOrientation(0, this.projectImages[0][0]);
-            this.checkImageOrientation(1, this.projectImages[1][0]);
+            for (let i = 0; i < this.projectImages.length; i++) {
+                if (this.projectImages[i].length > 0) {
+                    this.checkImageOrientation(i, this.projectImages[i][0]);
+                }
+            }
+            this.initMobileCarousel();
         }
+    }
+
+    private initMobileCarousel(): void {
+        this.ngZone.runOutsideAngular(() => {
+            const grid = document.querySelector('.projects-grid') as HTMLElement;
+            if (!grid) return;
+
+            const startScroll = () => {
+                if (this.mobileCarouselInterval) clearInterval(this.mobileCarouselInterval);
+                this.mobileCarouselInterval = setInterval(() => {
+                    if (window.innerWidth <= 1024) {
+                        const cardWidth = grid.querySelector('.project-card')?.clientWidth || 0;
+                        const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
+                        const scrollAmount = cardWidth + gap;
+
+                        // Check if we are at the end of the scroll container
+                        if (Math.ceil(grid.scrollLeft) + grid.clientWidth >= grid.scrollWidth - 10) {
+                            grid.scrollTo({ left: 0, behavior: 'smooth' }); // Loop back
+                        } else {
+                            grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                        }
+                    }
+                }, 3500); // 3.5 seconds moving interval
+            };
+
+            const stopScroll = () => {
+                if (this.mobileCarouselInterval) {
+                    clearInterval(this.mobileCarouselInterval);
+                    this.mobileCarouselInterval = null;
+                }
+            };
+
+            startScroll(); // Start initially
+
+            // Pause on interaction
+            grid.addEventListener('touchstart', stopScroll, { passive: true });
+            grid.addEventListener('touchend', startScroll, { passive: true });
+            grid.addEventListener('mouseenter', stopScroll);
+            grid.addEventListener('mouseleave', startScroll);
+        });
     }
 
     // Determine if the current image is portrait or landscape
@@ -163,6 +212,9 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.ctx) {
             this.ctx.revert();
+        }
+        if (this.mobileCarouselInterval) {
+            clearInterval(this.mobileCarouselInterval);
         }
         this.timerIntervals.forEach(interval => clearInterval(interval));
     }

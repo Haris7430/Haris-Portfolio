@@ -96,6 +96,94 @@
                 </div>
             </article>
 
+            <!-- Project 3: Rupee Logic -->
+            <article class="project-card rupee-card glass-panel" id="project-3">
+                <div class="project-content">
+                    <div class="project-meta">
+                        <span class="meta-tag">Financial Tool</span>
+                        <span class="meta-year">2026</span>
+                    </div>
+                    <h3 class="project-title">Rupee Logic</h3>
+                    <p class="project-description">
+                        Comprehensive and intuitive financial tools specifically tailored for the Indian financial
+                        ecosystem. Features bank-grade calculators for wealth building, taxes, mutual fund benefits, and
+                        retirement schemas including NPS and APY.
+                    </p>
+                    <ul class="project-features">
+                        <li><span class="bullet"></span> Precision Compounding Engine</li>
+                        <li><span class="bullet"></span> V3 Enterprise XIRR Algorithm</li>
+                        <li><span class="bullet"></span> PFRDA-compliant APY Tools</li>
+                        <li><span class="bullet"></span> Mobile-First Responsive UI</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span>Angular</span><span>TypeScript</span><span>GSAP</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://www.rupeelogics.in/" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-primary">
+                            Visit Live Site
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="project-image-wrapper">
+                    <ng-container *ngFor="let img of projectImages[2]; let i = index">
+                        <img [src]="img" [alt]="'Rupee Logics Application Dashboard Homepage ' + (i + 1)"
+                            class="project-img slider-img" [class.active]="activeImageIndices[2] === i" width="1600"
+                            height="769" loading="lazy" onerror="this.style.display='none'">
+                    </ng-container>
+                </div>
+            </article>
+
+            <!-- Project 4: Vasantham Hotel -->
+            <article class="project-card vasantham-card glass-panel" id="project-4">
+                <div class="project-content">
+                    <div class="project-meta">
+                        <span class="meta-tag">Restaurant & Catering</span>
+                        <span class="meta-year">Launching Soon</span>
+                    </div>
+                    <h3 class="project-title">Vasantham Restaurant</h3>
+                    <p class="project-description">
+                        A modern digital presence for a dependable, daily go-to eatery serving authentic Kerala cuisine
+                        on the National Highway. The platform will showcase real-time dine-in menus, catering details,
+                        and streamline large-scale event orders.
+                    </p>
+                    <ul class="project-features">
+                        <li><span class="bullet"></span> Digital Menu Showcase</li>
+                        <li><span class="bullet"></span> Catering Order Workflow</li>
+                        <li><span class="bullet"></span> Highway Commuter Guide</li>
+                        <li><span class="bullet"></span> Local SEO Strategy</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span>Angular</span><span>Tailwind CSS</span><span>Web Vitals</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://vasanthamhotel.shop/" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-primary">
+                            Visit Live Site
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="project-image-wrapper placeholder-wrapper">
+                    <div class="launching-soon-text">
+                        Launching Soon
+                    </div>
+                </div>
+            </article>
+
         </div>
     </div>
 </section>
